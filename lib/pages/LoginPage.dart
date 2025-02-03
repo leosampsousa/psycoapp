@@ -5,6 +5,7 @@ import 'package:teste/pages/HomePage.dart';
 import 'package:teste/pages/MainBackground.dart';
 import 'package:teste/pages/RegisterPage.dart';
 import 'package:teste/service/AuthService.dart';
+import 'package:teste/utils/StringUtils.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,6 +20,13 @@ class _LoginPageState extends State<LoginPage> {
   String username = "";
   String password = "";
   bool isObscure = false;
+  final usernameCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +90,15 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       BasicFormTextField(
                         labelText: "Usuário",
+                        controller: usernameCtrl,
                         validator: (value) => fieldRequiredValidator(value),
-                        onChanged: (value) => {username = value},
+                        onChanged: (value) {
+                          setState(() {
+                            usernameCtrl.text = StringUtils.removeWhitespaces(
+                                value.toLowerCase());
+                          });
+                          username = value;
+                        },
                       ),
                       const SizedBox(height: 16),
                       PasswordTextField(

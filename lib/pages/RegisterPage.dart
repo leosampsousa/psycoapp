@@ -84,6 +84,12 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
+  void dispose() {
+    _usernameCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -131,12 +137,18 @@ class _RegisterPageState extends State<RegisterPage> {
                                       controller: _usernameCtrl,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      validator: (value) =>
-                                          fieldRequiredValidator(value),
+                                      validator: (value) {
+                                        if (!StringUtils.isLowerAlphanumeric(
+                                            value)) {
+                                          return "Apenas letras e números";
+                                        }
+                                        return fieldRequiredValidator(value);
+                                      },
                                       onChanged: (value) {
                                         setState(() {
                                           _usernameCtrl.text =
-                                              value.toLowerCase();
+                                              StringUtils.removeWhitespaces(
+                                                  value.toLowerCase());
                                         });
                                         _username = value;
                                       })),

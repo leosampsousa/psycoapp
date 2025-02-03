@@ -24,11 +24,25 @@ class StringUtils {
     }
     return false;
   }
-}
 
-bool _isNumeric(String? s) {
-  if (s == null) {
-    return false;
+  static String removeWhitespaces(String string) {
+    if (string.contains(" ")) {
+      string = string.replaceFirst(" ", "");
+    }
+    return string;
   }
-  return double.tryParse(s) != null;
+
+  static bool isLowerAlphanumeric(String? string) {
+    if (string != null && string.isNotEmpty) {
+      return RegExp(r'^[a-z0-9]+$').hasMatch(string);
+    }
+    return true;
+  }
+
+  static bool _isNumeric(String? s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
 }
